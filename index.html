@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survivors - Servidor Project Zomboid</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Creepster&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+        /* Variáveis CSS para cores - Tema Apocalíptico */
+        :root {
+            --color-darkest: #111; /* Preto profundo */
+            --color-dark-gray: #333; /* Cinza escuro */
+            --color-medium-gray: #555; /* Cinza médio */
+            --color-light-gray: #ccc; /* Cinza claro */
+            --color-text-primary: #eee; /* Texto principal claro */
+            --color-accent-dark-red: #800000; /* Vermelho escuro (sangue seco) */
+            --color-accent-pale-yellow: #f0e68c; /* Amarelo pálido (doença/radiação) */
+            --color-border-dark: #444; /* Borda escura */
+            --font-family-primary: 'Roboto', sans-serif;
+            --font-family-secondary: 'Creepster', cursive;
+        }
+
+        /* Reset básico e tipografia */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family-primary);
+            line-height: 1.6;
+            color: var(--color-text-primary);
+            background-color: var(--color-darkest);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Títulos */
+        h1, h2 {
+            font-family: var(--font-family-secondary);
+            color: var(--color-accent-dark-red);
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+
+        h1 {
+            font-size: 3.5em;
+        }
+
+        h2 {
+            font-size: 2.8em;
+            margin-top: 40px;
+        }
+
+        h3 {
+            font-size: 1.8em;
+            color: var(--color-light-gray);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        /* Ícones para os títulos de feature-item */
+        /* Font Awesome icons são aplicados via classes como fas fa-skull diretamente no HTML */
+
+        /* Header */
+        header {
+            background-color: var(--color-dark-gray);
+            padding: 30px 0;
+            text-align: center;
+            border-bottom: 5px solid var(--color-accent-dark-red); /* Borda "sangrenta" */
+        }
+
+        header .logo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid var(--color-light-gray);
+            object-fit: cover;
+            margin-bottom: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .slogan {
+            font-size: 1.5em;
+            color: var(--color-light-gray);
+            font-style: italic;
+            margin-top: 10px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Hero Section (Banner principal) */
+        .hero {
+            width: 100%;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        .hero-banner {
+            width: 100%;
+            height: auto;
+            display: block;
+            filter: brightness(70%); /* Escurece um pouco o banner */
+        }
+
+        /* Seções de Conteúdo */
+        main section {
+            padding: 40px 0;
+            margin-bottom: 30px;
+            background-color: var(--color-darkest);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--color-border-dark);
+        }
+
+        .about p, .connect p, .gameplay p {
+            font-size: 1.1em;
+            text-align: center;
+            margin-bottom: 15px;
+            color: var(--color-light-gray);
+        }
+
+        .about strong, .gameplay strong {
+            color: var(--color-accent-pale-yellow);
+        }
+
+        /* Feature Grid */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .feature-item {
+            background-color: var(--color-dark-gray);
+            padding: 25px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease;
+            border: 1px solid var(--color-border-dark);
+        }
+
+        .feature-item:hover {
+            transform: translateY(-5px);
+            background-color: var(--color-medium-gray);
+        }
+
+        .feature-item ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 15px;
+        }
+
+        .feature-item li {
+            margin-bottom: 8px;
+            font-size: 1em;
+            color: var(--color-light-gray);
+        }
+
+        .feature-item li strong {
+            color: var(--color-accent-pale-yellow);
+        }
+
+        /* Conexão */
+        .connect .ip-info {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: var(--color-accent-dark-red);
+            margin-bottom: 25px;
+            background-color: var(--color-dark-gray);
+            padding: 15px;
+            border-radius: 5px;
+            display: inline-block;
+            letter-spacing: 1.5px;
+            border: 2px dashed var(--color-medium-gray);
+        }
+
+        .connect .small-text {
+            font-size: 0.9em;
+            color: #999;
+            margin-top: 20px;
+        }
+
+        /* Botão */
+        .btn-discord {
+            display: inline-block;
+            background-color: #7289DA; /* Mantendo a cor do Discord para fácil identificação */
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 1.2em;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-discord:hover {
+            background-color: #6a7bc2;
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--color-dark-gray);
+            color: var(--color-light-gray);
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+            border-top: 5px solid var(--color-accent-dark-red);
+        }
+
+        /* Responsividade Básica */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.8em;
+            }
+
+            h2 {
+                font-size: 2.2em;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2.2em;
+            }
+
+            .slogan {
+                font-size: 1.2em;
+            }
+
+            .header .logo {
+                width: 100px;
+                height: 100px;
+            }
+
+            .btn-discord {
+                font-size: 1em;
+                padding: 12px 25px;
+            }
+        }
+
+        /* --- PRELOADER STYLES --- */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--color-darkest);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999; /* Garante que fique acima de tudo */
+            transition: opacity 5s ease-out; /* Transição de desvanecimento MUITO mais lenta da TELA INTEIRA */
+        }
+
+        #preloader.fade-out {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none; /* Permite clicar no conteúdo por trás */
+        }
+
+        #preloader img {
+            width: 200px; /* Tamanho da logo no preloader */
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            animation: pulse 10s infinite alternate, fadeInOut 15s ease-in-out forwards; /* Animações combinadas */
+            opacity: 0; /* Começa invisível para o fade-in */
+        }
+
+        /* Animação para o "pulso" da logo (opcional, pode ser removida se quiser só o fade) */
+        @keyframes pulse {
+            0% { transform: scale(0.95); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(0.95); }
+        }
+
+        /* Animação para o surgimento e permanência da logo */
+        @keyframes fadeInOut {
+            0% { opacity: 0; } /* Começa invisível */
+            33% { opacity: 1; } /* Aparece totalmente em 1/3 do tempo total (5s de 15s) */
+            66% { opacity: 1; } /* Permanece visível (até 2/3 do tempo total, ou seja, 10s de 15s) */
+            100% { opacity: 1; } /* Permanece visível para o JS fazer o fade-out da div principal */
+        }
+    </style>
+</head>
+<body>
+    <div id="preloader">
+        <img src="https://i.imgur.com/Z6cIuQa.jpeg" alt="Carregando...">
+    </div>
+
+    <header>
+        <div class="container">
+            <img src="https://i.imgur.com/Z6cIuQa.jpeg" alt="Logo do Servidor Survivors" class="logo">
+            <h1>SURVIVORS</h1>
+            <p class="slogan">Sobreviva ao Apocalipse. Crie seu Legado.</p>
+        </div>
+    </header>
+
+    <section class="hero">
+        <img src="https://i.imgur.com/nSwvM6E.jpeg" alt="Banner do Servidor Survivors - Project Zomboid" class="hero-banner">
+    </section>
+
+    <main>
+        <section class="about">
+            <div class="container">
+                <h2>O Servidor</h2>
+                <p>No <strong>Survivors</strong>, a luta pela sobrevivência é real e implacável. Nosso servidor <strong>online 24 horas</strong> oferece uma experiência de Project Zomboid desafiadora e otimizada, perfeita para jogadores que buscam um verdadeiro apocalipse zumbi, mesmo em PCs mais modestos.</p>
+                <p>Com um grande foco na economia e interação entre jogadores, o <strong>Survivors</strong> te permite construir seu próprio império em um mundo onde cada recurso conta.</p>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <h2>Diferenciais</h2>
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <h3><i class="fas fa-skull"></i> Desafio Máximo</h3>
+                        <ul>
+                            <li><strong>Sem respawn de zumbis:</strong> Cada zumbi abatido é uma vitória permanente.</li>
+                            <li><strong>Sem respawn de loot:</strong> Cada item encontrado é precioso e único.</li>
+                            <li>Zumbis em alta quantidade e inteligência aguçada.</li>
+                        </ul>
+                    </div>
+                    <div class="feature-item">
+                        <h3><i class="fas fa-coins"></i> Economia Viva</h3>
+                        <ul>
+                            <li>Sistema de comércio robusto.</li>
+                            <li>Crie e gerencie sua própria lojinha.</li>
+                            <li>Desmonte ouro, prata e joias para obter dinheiro.</li>
+                        </ul>
+                    </div>
+                    <div class="feature-item">
+                        <h3><i class="fas fa-car"></i> Exploração Total</h3>
+                        <ul>
+                            <li>Claim de apenas 3 veiculos para balanceamento.</li>
+                            <li>Diversos veículos (incluindo RVs) e motos espalhados pelo mapa.</li>
+                            <li>Cidades vanilla e de mods disponíveis para explorar.</li>
+                        </ul>
+                    </div>
+                    <div class="feature-item">
+                        <h3><i class="fas fa-shield-alt"></i> Suporte e Justa</h3>
+                        <ul>
+                            <li>Suporte sempre à disposição para a comunidade.</li>
+                            <li><strong>Sem sistema Pay-to-Win:</strong> A habilidade é sua maior vantagem.</li>
+                            <li>Mods otimizados para um excelente ping e FPS.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="gameplay">
+            <div class="container">
+                <h2>Gameplay e Novidades</h2>
+                <p>O servidor <strong>Survivors</strong> está na sua <strong>Primeira Season</strong>, e estamos constantemente buscando aprimorar a experiência de jogo!</p>
+                <p>Sistemas de <strong>PvP e Eventos dinâmicos</strong> estão sendo cuidadosamente elaborados para serem implementados em breve, trazendo ainda mais emoção e desafios para a sua jornada.</p>
+                <h3><i class="fas fa-parachute-box"></i> AirDrop: Risco e Recompensa!</h3>
+                <p>Fique atento aos céus! Periodicamente, um avião sobrevoará o mapa, realizando um <strong>AirDrop</strong> de suprimentos. Esses drops podem conter <strong>itens valiosos e raros</strong>, ou até mesmo recursos simples como comida e ferramentas. No entanto, o risco é alto: junto com cada airdrop, um <strong>amplificador de ruído</strong> é ativado, atraindo hordas massivas de zumbis para a área. Você terá que decidir se vale a pena arriscar sua vida por esses recursos cruciais.</p>
+            </div>
+        </section>
+
+        <section class="connect">
+            <div class="container">
+                <h2>Como Conectar</h2>
+                <p class="ip-info"><strong>IP do Servidor:</strong> 181.215.45.108:10240</p>
+                <p>Não é necessária senha para entrar!</p>
+                <p>Para entrar no servidor, você precisará se inscrever em nossa coleção de mods no Steam Workshop. Junte-se ao nosso Discord para ter acesso a ela, suporte e interagir com a comunidade!</p>
+                <a href="https://discord.gg/WvEabVAhsM" target="_blank" class="btn-discord">ENTRAR NO DISCORD</a>
+                <p class="small-text">*A coleção de mods será disponibilizada no Discord.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Survivors Project Zomboid Server. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        window.addEventListener('load', function() {
+            const preloader = document.getElementById('preloader');
+            const preloaderImage = preloader.querySelector('img');
+
+            // Primeiro, garantir que a imagem comece com opacidade 0 para o fade-in via CSS animation
+            preloaderImage.style.opacity = 0; 
+
+            // Define um atraso para o fade-out da tela completa do preloader
+            // Isso deve ser igual à duração do fadeInOut da imagem (15s)
+            // Mais um tempo extra para garantir que a imagem apareceu e o pulso ocorreu
+            const preloaderDuration = 15000; // 15 segundos para a animação da imagem
+
+            setTimeout(function() {
+                preloader.classList.add('fade-out');
+            }, preloaderDuration); // Espera a animação da imagem terminar antes de começar o fade-out da div
+
+            // Remove o preloader do DOM após a transição de fade-out da tela
+            preloader.addEventListener('transitionend', function() {
+                preloader.remove();
+            });
+        });
+    </script>
+</body>
+</html>
