@@ -12,14 +12,14 @@
     <style>
         /* Variáveis CSS para cores - Tema Apocalíptico */
         :root {
-            --color-darkest: #111; /* Preto profundo */
-            --color-dark-gray: #333; /* Cinza escuro */
-            --color-medium-gray: #555; /* Cinza médio */
-            --color-light-gray: #ccc; /* Cinza claro */
-            --color-text-primary: #eee; /* Texto principal claro */
-            --color-accent-dark-red: #800000; /* Vermelho escuro (sangue seco) */
-            --color-accent-pale-yellow: #f0e68c; /* Amarelo pálido (doença/radiação) */
-            --color-border-dark: #444; /* Borda escura */
+            --color-darkest: #111;
+            --color-dark-gray: #333;
+            --color-medium-gray: #555;
+            --color-light-gray: #ccc;
+            --color-text-primary: #eee;
+            --color-accent-dark-red: #800000;
+            --color-accent-pale-yellow: #f0e68c;
+            --color-border-dark: #444;
             --font-family-primary: 'Roboto', sans-serif;
             --font-family-secondary: 'Creepster', cursive;
         }
@@ -72,16 +72,17 @@
             justify-content: center;
             text-align: center;
         }
-
-        /* Ícones para os títulos de feature-item */
-        /* Font Awesome icons são aplicados via classes como fas fa-skull diretamente no HTML */
+        
+        h3 .fas {
+            margin-right: 10px;
+        }
 
         /* Header */
         header {
             background-color: var(--color-dark-gray);
             padding: 30px 0;
             text-align: center;
-            border-bottom: 5px solid var(--color-accent-dark-red); /* Borda "sangrenta" */
+            border-bottom: 5px solid var(--color-accent-dark-red);
         }
 
         header .logo {
@@ -114,7 +115,7 @@
             width: 100%;
             height: auto;
             display: block;
-            filter: brightness(70%); /* Escurece um pouco o banner */
+            filter: brightness(70%);
         }
 
         /* Seções de Conteúdo */
@@ -173,8 +174,70 @@
             color: var(--color-light-gray);
         }
 
+        .feature-item li:before {
+            content: "•";
+            color: var(--color-accent-pale-yellow);
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+
         .feature-item li strong {
             color: var(--color-accent-pale-yellow);
+        }
+        
+        .cities .feature-item {
+            grid-column: span 2;
+        }
+        
+        /* Galeria de Mapas - Estilos para PC (padrão) */
+        .map-gallery {
+            display: grid;
+            /* Na tela do PC, a grade se ajusta, mantendo 200px de largura mínima */
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
+            justify-items: center;
+        }
+        
+        .map-item {
+            background-color: var(--color-dark-gray);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease;
+            text-align: center;
+            border: 1px solid var(--color-border-dark);
+            width: 200px;
+        }
+        
+        .map-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6);
+        }
+
+        .map-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-bottom: 2px solid var(--color-border-dark);
+            transition: transform 0.3s ease;
+        }
+        
+        .map-item:hover img {
+            transform: scale(1.02);
+        }
+        
+        .map-item p {
+            padding: 10px 5px;
+            font-size: 1em;
+            font-weight: bold;
+            color: var(--color-light-gray);
+            margin: 0;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
         }
 
         /* Conexão */
@@ -200,7 +263,7 @@
         /* Botão */
         .btn-discord {
             display: inline-block;
-            background-color: #7289DA; /* Mantendo a cor do Discord para fácil identificação */
+            background-color: #7289DA;
             color: white;
             padding: 15px 30px;
             text-decoration: none;
@@ -226,7 +289,7 @@
             border-top: 5px solid var(--color-accent-dark-red);
         }
 
-        /* Responsividade Básica */
+        /* Responsividade para telas pequenas (smartphones) */
         @media (max-width: 768px) {
             h1 {
                 font-size: 2.8em;
@@ -238,6 +301,27 @@
 
             .feature-grid {
                 grid-template-columns: 1fr;
+            }
+            
+            .cities .feature-item {
+                grid-column: span 1;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            /* Regras para telas de celular - grade de mapas menor */
+            .map-gallery {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+                gap: 10px;
+            }
+            
+            .map-item {
+                width: 100px;
+            }
+            
+            .map-item p {
+                font-size: 0.8em;
+                padding: 8px 4px;
             }
         }
 
@@ -272,38 +356,36 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 9999; /* Garante que fique acima de tudo */
-            transition: opacity 5s ease-out; /* Transição de desvanecimento MUITO mais lenta da TELA INTEIRA */
+            z-index: 9999;
+            transition: opacity 1s ease-out;
         }
 
         #preloader.fade-out {
             opacity: 0;
             visibility: hidden;
-            pointer-events: none; /* Permite clicar no conteúdo por trás */
+            pointer-events: none;
         }
 
         #preloader img {
-            width: 200px; /* Tamanho da logo no preloader */
+            width: 200px;
             height: 200px;
             border-radius: 50%;
             object-fit: cover;
-            animation: pulse 10s infinite alternate, fadeInOut 15s ease-in-out forwards; /* Animações combinadas */
-            opacity: 0; /* Começa invisível para o fade-in */
+            animation: pulse 2s infinite alternate, fadeInOut 3s ease-in-out forwards;
+            opacity: 0;
         }
 
-        /* Animação para o "pulso" da logo (opcional, pode ser removida se quiser só o fade) */
         @keyframes pulse {
             0% { transform: scale(0.95); }
             50% { transform: scale(1.05); }
             100% { transform: scale(0.95); }
         }
 
-        /* Animação para o surgimento e permanência da logo */
         @keyframes fadeInOut {
-            0% { opacity: 0; } /* Começa invisível */
-            33% { opacity: 1; } /* Aparece totalmente em 1/3 do tempo total (5s de 15s) */
-            66% { opacity: 1; } /* Permanece visível (até 2/3 do tempo total, ou seja, 10s de 15s) */
-            100% { opacity: 1; } /* Permanece visível para o JS fazer o fade-out da div principal */
+            0% { opacity: 0; }
+            33% { opacity: 1; }
+            66% { opacity: 1; }
+            100% { opacity: 1; }
         }
     </style>
 </head>
@@ -372,6 +454,83 @@
                 </div>
             </div>
         </section>
+        
+        <section class="cities">
+            <div class="container">
+                <h2>Cidades Exploráveis</h2>
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <h3><i class="fas fa-city"></i> Cidades Vanilla</h3>
+                        <ul>
+                            <li>Muldraugh, KY</li>
+                            <li>Riverside</li>
+                            <li>Rosewood</li>
+                            <li>West Point</li>
+                            <li>Louisville</li>
+                        </ul>
+                    </div>
+                </div>
+                <h3 style="margin-top: 40px;"><i class="fas fa-map-marker-alt"></i> Cidades de Mods</h3>
+                <div class="map-gallery">
+                    <div class="map-item">
+                        <img src="https://i.imgur.com/QHH6gHW.jpeg" alt="Capa do mapa Rewindville">
+                        <p>Rewindville</p>
+                    </div>
+                    <div class="map-item">
+                        <img src="https://i.imgur.com/hbHt4pF.jpeg" alt="Capa do mapa Jasperville">
+                        <p>Jasperville</p>
+                    </div>
+                    <div class="map-item">
+                        <img src="https://i.imgur.com/Br54PSF.jpeg" alt="Capa do mapa Leavenburg">
+                        <p>Leavenburg</p>
+                    </div>
+                    <div class="map-item">
+                        <img src="https://i.imgur.com/MhLo8b3.jpeg" alt="Capa do mapa New Ellroy">
+                        <p>New Ellroy</p>
+                    </div>
+                    <div class="map-item">
+                        <img src="https://i.imgur.com/ayEJFKb.jpeg" alt="Capa do mapa Pineville">
+                        <p>Pineville</p>
+                    </div>
+                    <div class="map-item">
+                        <img src="https://i.imgur.com/RAtBQkV.jpeg" alt="Capa do mapa Papaville">
+                        <p>Papaville</p>
+                    </div>
+                    <div class="map-item">
+                        <img src="https://i.imgur.com/rXDMyNl.jpeg" alt="Capa do mapa Westwood">
+                        <p>Westwood</p>
+                    </div>
+                    <div class="map-item">
+                        <img src="https://i.imgur.com/7XrMMIC.jpeg" alt="Capa do mapa Blackwood">
+                        <p>Blackwood</p>
+                    </div>
+                    <div class="map-item">
+                        <img src="https://i.imgur.com/0VbyyxR.jpeg" alt="Capa do mapa Santlakecity">
+                        <p>Santlakecity</p>
+                    </div>
+                    <div class="map-item">
+                        <img src="https://i.imgur.com/c1FdmDj.jpeg" alt="Capa do mapa Raccoon City">
+                        <p>Raccoon City</p>
+                    </div>
+                    <div class="map-item">
+                        <img src="https://i.imgur.com/TdUYeW5.jpeg" alt="Capa do mapa Mount Crow City">
+                        <p>Mount Crow City</p>
+                    </div>
+                    <div class="map-item">
+                        <img src="https://i.imgur.com/s8cNZzN.jpeg" alt="Capa do mapa Fort Redstone">
+                        <p>Fort Redstone</p>
+                    </div>
+                    <div class="map-item">
+                        <img src="https://i.imgur.com/viREz9i.jpeg" alt="Capa do mapa Eerie Country">
+                        <p>Eerie Country</p>
+                    </div>
+                    <div class="map-item">
+                        <img src="https://i.imgur.com/DuJtwn7.jpeg" alt="Capa do mapa Raven Creek">
+                        <p>Raven Creek</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <section class="gameplay">
             <div class="container">
@@ -406,19 +565,14 @@
             const preloader = document.getElementById('preloader');
             const preloaderImage = preloader.querySelector('img');
 
-            // Primeiro, garantir que a imagem comece com opacidade 0 para o fade-in via CSS animation
-            preloaderImage.style.opacity = 0; 
+            preloaderImage.style.opacity = 0;
 
-            // Define um atraso para o fade-out da tela completa do preloader
-            // Isso deve ser igual à duração do fadeInOut da imagem (15s)
-            // Mais um tempo extra para garantir que a imagem apareceu e o pulso ocorreu
-            const preloaderDuration = 15000; // 15 segundos para a animação da imagem
+            const preloaderDuration = 3000;
 
             setTimeout(function() {
                 preloader.classList.add('fade-out');
-            }, preloaderDuration); // Espera a animação da imagem terminar antes de começar o fade-out da div
+            }, preloaderDuration);
 
-            // Remove o preloader do DOM após a transição de fade-out da tela
             preloader.addEventListener('transitionend', function() {
                 preloader.remove();
             });
